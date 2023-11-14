@@ -67,6 +67,10 @@ session_start();
         }
         ?>
     </p>
+    <p>
+        ↓Task 19 api<br>
+        <a href="%url/rel:mpgt:task19_api%">%val:usr:loginID%</a><br>
+    </p>
 </body>
 
 </html>
