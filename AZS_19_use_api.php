@@ -20,22 +20,25 @@ $search_condition_answer_2 = array(
     array("name" => "answer_status", "value" => 2) // 1:回答中 ; 2:完了
 );
 
-if($SPIRAL->getContextByFieldTitle("kind") == 2) {
+if ($SPIRAL->getContextByFieldTitle("kind") == 2) {
     array_push($search_condition_answer_1, array("name" => "department_id", "value" => $SPIRAL->getContextByFieldTitle("department_id")));
     array_push($search_condition_answer_2, array("name" => "department_id", "value" => $SPIRAL->getContextByFieldTitle("department_id")));
 }
-if($SPIRAL->getContextByFieldTitle("kind") == 3) {
+if ($SPIRAL->getContextByFieldTitle("kind") == 3) {
     array_push($search_condition_answer_1, array("name" => "search_id", "value" => '%' . $SPIRAL->getContextByFieldTitle("loginID") . '%', "operator" => "LIKE"));
     array_push($search_condition_answer_2, array("name" => "search_id", "value" => '%' . $SPIRAL->getContextByFieldTitle("loginID") . '%', "operator" => "LIKE"));
 }
 $columns =  [
+    'id',
     'answerID',
     'companyID',
+    'companyName',
     'personID',
-    'azusa_kind',
+    'azusa_kind', // 1: 国内; 2: 監査役
     'department_id',
     'answer_status',
     'search_id',
+    'registDate',
 ];
 
 // get api answer status 1
@@ -78,8 +81,12 @@ $dataAnswerStatus2 = json_encode($conf_data);
 
 $db_title_2 = 'azusa_relationDB';
 $columns_2 =  [
+    'id',
+    'registDate',
+    'lastupDate',
     'relationriskID',
     'companyID',
+    'companyName',
     'personID',
     'azusa_status',
     'answer_status',
@@ -87,18 +94,18 @@ $columns_2 =  [
 ];
 
 $search_condition_relation_1 = array(
-    // array("name" => "answer_status", "value" => 1) // 1:回答中 ; 2:完了
+    array("name" => "answer_status", "value" => 1) // 1:回答中 ; 2:完了
 );
 $search_condition_relation_2 = array(
-    // array("name" => "answer_status", "value" => 2) // 1:回答中 ; 2:完了
+    array("name" => "answer_status", "value" => 2) // 1:回答中 ; 2:完了
 );
 
-if($SPIRAL->getContextByFieldTitle("kind") == 2) {
+if ($SPIRAL->getContextByFieldTitle("kind") == 2) {
     array_push($search_condition_relation_1, array("name" => "department_id", "value" => $SPIRAL->getContextByFieldTitle("department_id")));
     array_push($search_condition_relation_2, array("name" => "department_id", "value" => $SPIRAL->getContextByFieldTitle("department_id")));
 }
 
-if($SPIRAL->getContextByFieldTitle("kind") == 3) {
+if ($SPIRAL->getContextByFieldTitle("kind") == 3) {
     array_push($search_condition_relation_1, array("name" => "search_id", "value" => '%' . $SPIRAL->getContextByFieldTitle("loginID") . '%', "operator" => "LIKE"));
     array_push($search_condition_relation_2, array("name" => "search_id", "value" => '%' . $SPIRAL->getContextByFieldTitle("loginID") . '%', "operator" => "LIKE"));
 }
@@ -121,6 +128,7 @@ foreach ($conf as &$src) {
     $src = array_combine($columns_2, $src);
 }
 $dataRelationStatus1 = json_encode($conf);
+
 // get api relation answer status 2
 $request = new SpiralApiRequest();
 $request->put("spiral_api_token", $api_token);
@@ -144,6 +152,8 @@ $dataRelationStatus2 = json_encode($conf);
 <html>
 
 <head>
+    <link rel="stylesheet" href="//cdn.datatables.net/1.13.7/css/jquery.dataTables.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 </head>
 <style>
     .smp-card-list {
@@ -323,5 +333,216 @@ $dataRelationStatus2 = json_encode($conf);
         </span>
     </div>
 
+    <div>
+        <h2>回答リスト: 進行中</h2>
+        <table id="dataAnswerStatus1" class="display">
+            <thead>
+                <tr>
+                    <th>id</th>
+                    <th>種別</th>
+                    <th>回答ID</th>
+                    <th>ステータス</th>
+                    <th>企業ID</th>
+                    <th>企業名</th>
+                    <th>personID</th>
+                    <th>department_id</th>
+                    <th>登録日時</th>
+                </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+    </div>
+    <hr>
+    <div>
+        <h2>回答リスト: 完了</h2>
+        <table id="dataAnswerStatus2" class="display">
+            <thead>
+                <tr>
+                    <th>id</th>
+                    <th>種別</th>
+                    <th>回答ID</th>
+                    <th>ステータス</th>
+                    <th>企業ID</th>
+                    <th>企業名</th>
+                    <th>personID</th>
+                    <th>department_id</th>
+                    <th>登録日時</th>
+                </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+    </div>
+    <hr>
+    <div>
+        <h2>リレーションリスクリスト: 進行中</h2>
+        <table id="dataRelationStatus1" class="display">
+            <thead>
+                <tr>
+                    <th>id</th>
+                    <th>登録日時</th>
+                    <th>更新日時</th>
+                    <th>リレーションリスクID</th>
+                    <th>企業ID</th>
+                    <th>企業名</th>
+                    <th>personID</th>
+                    <th>azusa_status</th>
+                    <th>ステータス</th>
+                </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+    </div>
+    <hr>
+    <div>
+        <h2>リレーションリスクリスト: 完了</h2>
+        <table id="dataRelationStatus2" class="display">
+            <thead>
+                <tr>
+                    <th>id</th>
+                    <th>登録日時</th>
+                    <th>更新日時</th>
+                    <th>リレーションリスクID</th>
+                    <th>企業ID</th>
+                    <th>企業名</th>
+                    <th>personID</th>
+                    <th>azusa_status</th>
+                    <th>ステータス</th>
+                </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+    </div>
+
 </body>
+<script src="//cdn.datatables.net/1.13.7/js/jquery.dataTables.min.js"></script>
+<script>
+    $(document).ready(function() {
+        function populateDataTable(jsonData, dataTableId) {
+            var data = JSON.parse(jsonData);
+            var dataTable = $('#' + dataTableId).DataTable({
+                lengthMenu: [[10, 25, 50, 100, -1], [10, 25, 50, 100, 'All']],
+                columns: [{
+                        data: 'id'
+                    },
+                    {
+                        data: 'azusa_kind'
+                    },
+                    {
+                        data: 'answerID'
+                    },
+                    {
+                        data: 'answer_status'
+                    },
+                    {
+                        data: 'companyID'
+                    },
+                    {
+                        data: 'companyName'
+                    },
+                    {
+                        data: 'personID'
+                    },
+                    {
+                        data: 'department_id'
+                    },
+                    {
+                        data: 'registDate'
+                    }
+                ]
+            });
+
+            for (var i = 0; i < data.length; i++) {
+                var answer_status = data[i].answer_status == 1 ? '回答中' : '完了';
+                var azusa_kind = data[i].azusa_kind == 1 ? '国内' : '監査役';
+
+                dataTable.row.add({
+                    'id': data[i].id,
+                    'azusa_kind': azusa_kind,
+                    'answerID': data[i].answerID,
+                    'answer_status': answer_status,
+                    'companyID': data[i].companyID,
+                    'companyName': data[i].companyName,
+                    'personID': data[i].personID,
+                    'department_id': data[i].department_id,
+                    'registDate': data[i].registDate
+                });
+            }
+
+            dataTable.draw();
+        }
+
+        // START dataAnswerStatus1
+        var jsonData1 = '<?php echo $dataAnswerStatus1; ?>';
+        populateDataTable(jsonData1, 'dataAnswerStatus1');
+        // END dataAnswerStatus1
+
+        // START dataAnswerStatus2
+        var jsonData2 = '<?php echo $dataAnswerStatus2; ?>';
+        populateDataTable(jsonData2, 'dataAnswerStatus2');
+        // END dataAnswerStatus2
+
+        function populateDataTable2(jsonData, dataTableId) {
+            var data = JSON.parse(jsonData);
+            var dataTable = $('#' + dataTableId).DataTable({
+                lengthMenu: [[10, 25, 50, 100, -1], [10, 25, 50, 100, 'All']],
+                columns: [{
+                        data: 'id'
+                    }, {
+                        data: 'registDate'
+                    },
+                    {
+                        data: 'lastupDate'
+                    },
+                    {
+                        data: 'relationriskID'
+                    },
+                    {
+                        data: 'companyID'
+                    },
+                    {
+                        data: 'companyName'
+                    },
+                    {
+                        data: 'personID'
+                    },
+                    {
+                        data: 'azusa_status'
+                    },
+                    {
+                        data: 'answer_status'
+                    }
+                ]
+            });
+
+            for (var i = 0; i < data.length; i++) {
+                var answer_status = data[i].answer_status == 1 ? '回答中' : '完了';
+                // var azusa_kind = data[i].azusa_kind == 1 ? '国内' : '監査役';
+
+                dataTable.row.add({
+                    'id': data[i].id,
+                    'registDate': data[i].registDate,
+                    'lastupDate': data[i].lastupDate,
+                    'relationriskID': data[i].relationriskID,
+                    'companyID': data[i].companyID,
+                    'companyName': data[i].companyName,
+                    'personID': data[i].personID,
+                    'azusa_status': data[i].azusa_status,
+                    'answer_status': answer_status
+                });
+            }
+
+            dataTable.draw();
+        }
+
+        // START dataRelationStatus1
+        var jsonData3 = '<?php echo $dataRelationStatus1; ?>';
+        populateDataTable2(jsonData3, 'dataRelationStatus1');
+        // END dataRelationStatus1
+
+        // START dataRelationStatus2
+        var jsonData4 = '<?php echo $dataRelationStatus2; ?>';
+        populateDataTable2(jsonData4, 'dataRelationStatus2');
+        // END dataRelationStatus2
+    });
+</script>
 <html>
