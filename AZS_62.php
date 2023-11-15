@@ -85,6 +85,48 @@ if ($_POST["submit-form"] == "1") {
     $request->put("data", $dataUpdate);
 
     $response = $api_communicator->request("database", "upsert", $request);
+
+    // API UPDATE azusa_im_ansaDB
+    $db_title = 'azusa_im_ansaDB';
+    $keyUpdate = 'answer_id';
+    $dataUpdate = array(
+        array("name" => "answer_id", "value" => $originData['answer_id']),
+    );
+
+    $request = new SpiralApiRequest();
+    $request->put("spiral_api_token", $api_token);
+    $request->put("Content-Type", 'application/json; charset=UTF-8');
+    $request->put("passkey", $passkey);
+    $request->put("key", $keyUpdate);
+    $request->put("db_title", $db_title);
+    $request->put("signature", $signature);
+    $request->put("data", $dataUpdate);
+
+    $response = $api_communicator->request("database", "upsert", $request);
+
+    // API UPDATE azusa_im_answDB
+    $db_title = 'azusa_im_answDB';
+    $keyUpdate = 'company_id';
+    $dataUpdate = array(
+        array("name" => "company_id", "value" => $originData['company_id']),
+        array("name" => "company_name", "value" => $originData['company_name']),
+        array("name" => "person_id", "value" => $originData['person_id']),
+        array("name" => "person_name", "value" => $originData['person_name']),
+        array("name" => "answer_id", "value" => $originData['answer_id']),
+        array("name" => "fiscalyear", "value" => $originData['fiscalyear']),
+        array("name" => "answer_date", "value" => $originData['answer_date']),
+    );
+
+    $request = new SpiralApiRequest();
+    $request->put("spiral_api_token", $api_token);
+    $request->put("Content-Type", 'application/json; charset=UTF-8');
+    $request->put("passkey", $passkey);
+    $request->put("key", $keyUpdate);
+    $request->put("db_title", $db_title);
+    $request->put("signature", $signature);
+    $request->put("data", $dataUpdate);
+
+    $response = $api_communicator->request("database", "upsert", $request);
     var_dump($response);
 }
 
