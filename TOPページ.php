@@ -73,7 +73,18 @@ session_start();
     </p>
     <p>
         ↓Task 63<br>
-        <a href="%url/rel:mpgt:AZS_63%">task 63 demo</a><br>
+        <?php
+        if ($SPIRAL->getContextByFieldTitle("kind") == 1) {
+            echo '<a href="%url/rel:mpgt:AZS_63%">Admin</a><br>';	
+
+        }
+        if ($SPIRAL->getContextByFieldTitle("kind") == 2) {
+            echo '<a href="%url/rel:mpgt:AZS_63%&46265_4401765_1=%val:usr:department_id%&46266_4401765_1=%val:usr:department_id%&46267_4414161_1=%val:usr:department_id%&46268_4414161_1=%val:usr:department_id%">Coorporate</a><br>';
+        }
+        if ($SPIRAL->getContextByFieldTitle("kind") == 3) {
+            echo "<a href='%url/rel:mpgt:AZS_63%&46265_4414151_1=%val:usr:loginID%&46266_4414151_1=%val:usr:loginID%&46267_4414174_1=%val:usr:loginID%&46268_4414174_1=%val:usr:loginID%'>User</a><br>";
+        }
+        ?>
     </p>
 </body>
 

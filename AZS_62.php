@@ -127,7 +127,6 @@ if ($_POST["submit-form"] == "1") {
     $request->put("data", $dataUpdate);
 
     $response = $api_communicator->request("database", "upsert", $request);
-    var_dump($response);
 }
 
 ?>
