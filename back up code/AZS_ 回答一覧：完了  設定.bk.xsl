@@ -252,7 +252,7 @@
                                     </xsl:otherwise>
                                 </xsl:choose>
                             </xsl:attribute>
-                            <a href="{/table/cardList/card[@title='page_213177'][@recordId=$id]}" target="_self">
+                            <a href="{/table/cardList/card[@title='page_216484'][@recordId=$id]}" target="_self">
                                 <xsl:value-of select="usr_answerID" />
                             </a>
                         </td>
@@ -286,7 +286,7 @@
                                     </xsl:otherwise>
                                 </xsl:choose>
                             </xsl:attribute>
-                            <a href="{/table/cardList/card[@title='page_213179'][@recordId=$id]}"
+                            <a href="{/table/cardList/card[@title='page_216486'][@recordId=$id]}"
                                 onclick="updateUrl(event)" data-company="{$usr_companyID}" data-department="{$usr_department_id}"  data-member="{@id}" target="_self">
                                 <xsl:value-of select="usr_companyID" />
                             </a>
@@ -305,11 +305,7 @@
                                     </xsl:otherwise>
                                 </xsl:choose>
                             </xsl:attribute>
-                            <!-- <xsl:value-of select="usr_companyName" /> -->
-                            <a href="{/table/cardList/card[@title='page_216487'][@recordId=$id]}"
-                                 onclick="updateUrl(event,2)" data-department="{$usr_department_id}"  data-company="{$usr_companyID}"  data-member="{@id}" target="_self">
-                                <xsl:value-of select="usr_companyName" />
-                            </a>
+                            <xsl:value-of select="usr_companyName" />
                         </td>
                         <td class="smp-cell-data smp-cell-{$row}-7 smp-cell smp-cell-row-{$row} smp-cell-col-7"
                             align="left">
@@ -347,18 +343,11 @@
             </table>
         </form>
         <script>
-            function updateUrl(event, type = '') {
+            function updateUrl(event) {
                 var companyId = event.target.dataset.company ??  event.target.innerText
                 var departmentId = event.target.dataset.department ??  ''
                 var memberId = event.target.dataset.member
-                if(type == 2) {
-                    event.target.href = event.target.href  + '&amp;46265_4379887_1=' + companyId
-                                    + '&amp;46266_4379887_1=' + companyId
-                                    + '&amp;46267_4414157_1=' + companyId
-                                    + '&amp;46268_4414157_1=' + companyId
-                } else {
-                    event.target.href = event.target.href  + '&amp;45652_4379887_1='+ companyId + '&amp;company_id=' + companyId + '&amp;member_id=' + memberId + '&amp;46095_4414161_1='+ departmentId 
-                }
+                event.target.href = event.target.href  + '&amp;45652_4379887_1='+ companyId + '&amp;company_id=' + companyId + '&amp;member_id=' + memberId + '&amp;46095_4414161_1='+ departmentId 
             }
         </script>
     </xsl:template>
