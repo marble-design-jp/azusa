@@ -252,7 +252,7 @@
                                     </xsl:otherwise>
                                 </xsl:choose>
                             </xsl:attribute>
-                            <a href="{/table/cardList/card[@title='page_216480'][@recordId=$id]}" target="_self">
+                            <a href="{/table/cardList/card[@title='page_216484'][@recordId=$id]}" target="_self">
                                 <xsl:value-of select="usr_answerID" />
                             </a>
                         </td>
@@ -286,11 +286,8 @@
                                     </xsl:otherwise>
                                 </xsl:choose>
                             </xsl:attribute>
-                            <!-- <a href="{/table/cardList/card[@title='page_216480'][@recordId=$id]}"
+                            <a href="{/table/cardList/card[@title='page_216486'][@recordId=$id]}"
                                 onclick="updateUrlCompany(event)" data-company="{$usr_companyID}" data-department="{$usr_department_id}"  data-member="{@id}" target="_self">
-                                <xsl:value-of select="usr_companyID" />
-                            </a> -->
-                            <a href="https://ctr34.smp.ne.jp/spiral/servlet/member.parts.SettingTable?_application_id=50&amp;_act=UseCard&amp;_card_page_id=213179&amp;_card_member_id={$id}&amp;_card_db_id=165255&amp;45652_4379887_1={$usr_companyID}&amp;company_id={$usr_companyID}&amp;46095_4414161_1={$usr_department_id}" target="_self">
                                 <xsl:value-of select="usr_companyID" />
                             </a>
                         </td>
@@ -346,27 +343,7 @@
             </table>
         </form>
         <script>
-            function updateUrlCompany(event) {
-                var companyId = event.target.dataset.company ?? event.target.innerText;
-                var departmentId = event.target.dataset.department ?? '';
-                var memberId = event.target.dataset.member;
-
-                var currentUrl = event.target.href;
-
-                var urlSearchParams = new URLSearchParams(window.location.search);
-
-                <!-- urlSearchParams.set('_card_page_id', '213179'); -->
-<!-- 
-                urlSearchParams.set('45652_4379887_1', companyId);
-                urlSearchParams.set('46095_4414157_1', companyId);
-                urlSearchParams.set('company_id', companyId);
-                urlSearchParams.set('member_id', memberId);
-                urlSearchParams.set('46095_4414161_1', departmentId); -->
-
-                var newUrl = currentUrl.split('?')[0] + '?' + urlSearchParams.toString();
-
-                <!-- event.target.href = newUrl; -->
-            }
+         
         </script>
     </xsl:template>
 

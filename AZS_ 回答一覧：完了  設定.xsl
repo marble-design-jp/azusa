@@ -286,8 +286,11 @@
                                     </xsl:otherwise>
                                 </xsl:choose>
                             </xsl:attribute>
-                            <a href="{/table/cardList/card[@title='page_216486'][@recordId=$id]}"
+                            <!-- <a href="{/table/cardList/card[@title='page_216486'][@recordId=$id]}"
                                 onclick="updateUrlCompany(event)" data-company="{$usr_companyID}" data-department="{$usr_department_id}"  data-member="{@id}" target="_self">
+                                <xsl:value-of select="usr_companyID" />
+                            </a> -->
+                            <a href="https://ctr34.smp.ne.jp/spiral/servlet/member.parts.SettingTable?_application_id=50&amp;_act=UseCard&amp;_card_page_id=213179&amp;_card_member_id={$id}&amp;_card_db_id=165255&amp;45652_4379887_1={$usr_companyID}&amp;company_id={$usr_companyID}&amp;46095_4414161_1={$usr_department_id}" target="_self">
                                 <xsl:value-of select="usr_companyID" />
                             </a>
                         </td>
