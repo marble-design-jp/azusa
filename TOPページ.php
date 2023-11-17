@@ -11,7 +11,19 @@ session_start();
     <p>
         ↓権限：管理者・営業担当者どちらでログインしても表示<br>
         <br>
-        <a href="%url/rel:mpgt:page_213174%">回答リスト</a>
+        <!-- <a href="%url/rel:mpgt:page_213174%">回答リスト</a> -->
+        <?php
+        if ($SPIRAL->getContextByFieldTitle("kind") == 1) {
+            echo '<a href="%url/rel:mpgt:page_213174%">Admin</a><br>';	
+
+        }
+        if ($SPIRAL->getContextByFieldTitle("kind") == 2) {
+            echo '<a href="%url/rel:mpgt:page_213174%&45652_4401765_1=%val:usr:department_id%&user_kind=%val:usr:kind:id%">Coorporate</a><br>';
+        }
+        if ($SPIRAL->getContextByFieldTitle("kind") == 3) {
+            echo "<a href='%url/rel:mpgt:page_213174%&45652_4414151_1=%val:usr:loginID%&user_kind=%val:usr:kind:id%&user_search=%val:usr:loginID%'>User</a><br>";
+        }
+        ?>
     </p>
     <br>
     <br>
