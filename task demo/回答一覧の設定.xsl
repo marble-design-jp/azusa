@@ -343,11 +343,15 @@
                     if(userKind == 3){
                         var userKind = urlSearchParams.get('user_search')
                         
-                        newUrlSearchParams.set('46265_4414151_1', departmentId);
-                        newUrlSearchParams.set('46266_4414151_1', departmentId);
-                        newUrlSearchParams.set('46267_4414174_1', departmentId);
-                        newUrlSearchParams.set('46268_4414174_1', departmentId);
+                        newUrlSearchParams.set('46265_4414151_1', userKind);
+                        newUrlSearchParams.set('46266_4414151_1', userKind);
+                        newUrlSearchParams.set('46267_4414174_1', userKind);
+                        newUrlSearchParams.set('46268_4414174_1', userKind);
                     }
+                    newUrlSearchParams.set('46265_4379887_1', companyId);
+                    newUrlSearchParams.set('46266_4379887_1', companyId);
+                    newUrlSearchParams.set('46267_4414157_1', companyId);
+                    newUrlSearchParams.set('46268_4414157_1', companyId);
                 } else {
                     newUrlSearchParams.set('45652_4379887_1', companyId);
                     newUrlSearchParams.set('company_id', companyId);
