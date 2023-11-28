@@ -50,28 +50,9 @@ $request->put("db_title", $db_title);
 $request->put("signature", $signature);
 $request->put("select_columns", $columns);
 $request->put("search_condition", $search_condition_answer_1);
-$request->put("labels_target", "all");
 
 $response = $api_communicator->request("database", "select", $request);
 $conf_data = $response->getString('data');
-$conf_label = $response->getString('label');
-$filteredArray = array_filter($conf_label, function ($obj) {
-    return (bool) get_object_vars($obj);
-});
-$labelConvertedArray = [];
-foreach ($filteredArray as $key => $obj) {
-    $labelConvertedArray[$key] = json_decode(json_encode($obj), true);
-}
-foreach ($conf_data as &$item) {
-    $value = $item[5];
-    if (isset($labelConvertedArray[5][$value])) {
-        $item[5] = $labelConvertedArray[5][$value];
-    }
-    $value2 = $item[7];
-    if (isset($labelConvertedArray[5][$value2])) {
-        $item[7] = $labelConvertedArray[5][$value2];
-    }
-}
 
 // $countColumns = count($columns);
 foreach ($conf_data as &$src) {
@@ -474,16 +455,16 @@ $dataRelationStatus2 = json_encode($conf);
             });
 
             for (var i = 0; i < data.length; i++) {
-                // var answer_status = data[i].answer_status == 1 ? '回答中' : '完了';
-                // var azusa_kind = data[i].azusa_kind == 1 ? '国内' : '監査役';
+                var answer_status = data[i].answer_status == 1 ? '回答中' : '完了';
+                var azusa_kind = data[i].azusa_kind == 1 ? '国内' : '監査役';
                 var answerDetail = '<a href="https://ctr34.smp.ne.jp/spiral/servlet/member.parts.SettingTable?_application_id=50&_act=UseCard&_card_page_id=213177&_card_member_id=' + data[i].id + '&_card_db_id=165255">' + data[i].answerID + '</a>';
                 var companyDetail = '<a href="https://ctr34.smp.ne.jp/spiral/servlet/member.parts.SettingTable?_application_id=50&_act=UseCard&_card_page_id=213179&_card_member_id=' + data[i].id + '&_card_db_id=165255">' + data[i].companyID + '</a>';
 
                 dataTable.row.add({
                     'id': data[i].id,
-                    'azusa_kind': data[i].azusa_kind,
+                    'azusa_kind': azusa_kind,
                     'answerID': answerDetail,
-                    'answer_status': data[i].answer_status,
+                    'answer_status': answer_status,
                     'companyID': companyDetail,
                     'companyName': data[i].companyName,
                     'personID': data[i].personID,
