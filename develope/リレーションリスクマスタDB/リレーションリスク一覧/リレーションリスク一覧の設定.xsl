@@ -342,7 +342,7 @@
                 </xsl:otherwise>
               </xsl:choose>
             </xsl:attribute>
-            <a href="{/table/cardList/card[@title='page_216582'][@recordId=$id]}&answerId={$usr_answer_ID}" target="_self">
+            <a href="{/table/cardList/card[@title='page_216582'][@recordId=$id]}&amp;answerId={$usr_answer_ID}" target="_self">
               <xsl:value-of select="usr_answer_ID" />
             </a>
           </td>
