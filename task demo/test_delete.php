@@ -15,30 +15,6 @@ $db_title = 'azusa_im_ansaDB';
 $columns =  [
     'answer_id',
 ];
-// $search_condition = array(
-//     array('name' => 'answer_id', 'value' => '123'),
-//     array('name' => 'answer_id', 'value' => '321', 'operator' => '=', 'logical_connection' => 'or'),
-//     array('name' => 'answer_id', 'value' => '111', 'operator' => '=', 'logical_connection' => 'or'),
-//     array('name' => 'answer_id', 'value' => '222', 'operator' => '=', 'logical_connection' => 'or'),
-// );
-$search_condition = array(
-    array('name' => 'answer_id', 'value' => '123'),
-);
-
-$number_of_elements = 200;
-
-for ($i = 0; $i < $number_of_elements; $i++) {
-    $value = $i + 1;
-    $new_condition = array(
-        'name' => 'answer_id',
-        'value' => $value,
-        'operator' => '=',
-        'logical_connection' => 'or',
-    );
-    array_push($search_condition, $new_condition);
-}
-
-var_dump($search_condition);die;
 // get api 登録用DB
 $request = new SpiralApiRequest();
 $request->put("spiral_api_token", $api_token);
@@ -46,17 +22,56 @@ $request->put("Content-Type", 'application/json; charset=UTF-8');
 $request->put("passkey", $passkey);
 $request->put("db_title", $db_title);
 $request->put("signature", $signature);
-// $request->put("select_columns", $columns);
-$request->put("search_condition", $search_condition);
+$request->put("select_columns", $columns);
+// $request->put("search_condition", $search_condition);
 
-$response = $api_communicator->request("database", "delete", $request);
-var_dump($response);
-// $conf_data = $response->getString('data');
+$response = $api_communicator->request("database", "select", $request);
+$conf_data = $response->getString('data');
 
-// $countColumns = count($columns);
-// foreach ($conf_data as &$src) {
-//     $src = array_combine($columns, $src);
-// }
+$countColumns = count($columns);
+foreach ($conf_data as &$src) {
+    $src = array_combine($columns, $src);
+}
+
+// delete data
+$db_title = 'azusa_im_ansaDB';
+if (!empty($_GET['bulk_delete'])) {
+    $checks = $_GET['check[]'];
+    if (is_array($checks)) {
+        $search_condition = [];
+        foreach ($checks as $value) {
+            $new_condition = array('name' => 'answer_id', 'value' => $value, 'operator' => '=', 'logical_connection' => 'or');
+            array_push($search_condition, $new_condition);
+        }
+    } else $search_condition = array(array('name' => 'answer_id', 'value' => $checks));
+
+    // $search_condition = array(
+    //     array('name' => 'answer_id', 'value' => '123'),
+    // );
+
+    // $number_of_elements = 200;
+
+    // for ($i = 0; $i < $number_of_elements; $i++) {
+    //     $value = $i + 1;
+    //     $new_condition = array('name' => 'answer_id', 'value' => $value, 'operator' => '=', 'logical_connection' => 'or');
+    //     array_push($search_condition, $new_condition);
+    // }
+
+    // get api 登録用DB
+    $request = new SpiralApiRequest();
+    $request->put("spiral_api_token", $api_token);
+    $request->put("Content-Type", 'application/json; charset=UTF-8');
+    $request->put("passkey", $passkey);
+    $request->put("db_title", $db_title);
+    $request->put("signature", $signature);
+    $request->put("search_condition", $search_condition);
+
+    $response = $api_communicator->request("database", "delete", $request);
+    $ok = false;
+    if ($response->code == 0) {
+        $ok = true;
+    }
+}
 ?>
 <!DOCTYPE html>
 <html id="SMP_STYLE">
@@ -70,6 +85,17 @@ var_dump($response);
 
 <body>
     <h1>Test Delete</h1>
+    <form action="" method="post">
+        <? foreach ($conf_data as $data) { ?>
+            <input type="checkbox" name="check[]" value="<? echo $data['answer_id'] ?>"><? echo $data['answer_id'] ?><br>
+        <? } ?>
+        <button type="submit" name="bulk_delete" value="bulk_delete">Bulk delete</button>
+    </form>
 </body>
+<script>
+    <? if (!empty($_GET['bulk_delete']) && $ok) {
+        echo "alert('Deleted data');";
+    } ?>
+</script>
 
 </html>
